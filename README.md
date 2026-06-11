@@ -43,6 +43,12 @@ flowchart LR
 | 4 | [Command Injection](docs/command-injection.md) | Unsanitised system() call | Critical | T1059.004 |
 | 5 | [Brute Force](docs/brute-force.md) | No account lockout | Medium | T1110.001 |
 
+## Evidence
+
+![SQLi - All Users](screenshots/sqli-all-users-localhost.png)
+![Burp Intruder Results](screenshots/burp-intruder-results.png)
+![Command Injection](screenshots/command-injection-ping.png)
+
 ---
 
 ## Setup

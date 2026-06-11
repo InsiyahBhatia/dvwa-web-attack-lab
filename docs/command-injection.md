@@ -19,7 +19,7 @@ Exploit unsanitised input in a network diagnostic feature (ping) to inject arbit
 ```mermaid
 flowchart LR
     A[Attacker<br/>Kali 10.0.3.15] -->|Inject Commands| B[DVWA Ping Feature]
-    B -->|Pass to<br/>shell_exec()| C[OS Command Execution]
+    B -->|"Pass to<br/>shell_exec()"| C[OS Command Execution]
     C -->|Output| D[Web Response<br/>with uid/gid]
 ```
 
