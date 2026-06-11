@@ -149,19 +149,19 @@ sequenceDiagram
     participant Burp as Burp Intruder
     participant DVWA as DVWA Login
     
-    loop Sniper Attack (12 requests)
-        Burp->>DVWA: GET /brute/?password=123456
-        DVWA-->>Burp: 200 OK | Length: 4836
+    loop Sniper Attack 12 requests
+        Burp->>DVWA: "GET brute password attempt"
+        DVWA-->>Burp: 200 OK Length 4836
         
-        Burp->>DVWA: GET /brute/?password=password
-        DVWA-->>Burp: 200 OK | Length: 4880
+        Burp->>DVWA: "GET brute password=password"
+        DVWA-->>Burp: 200 OK Length 4880
         note over DVWA,Burp: Anomaly detected!
         
-        Burp->>Attacker: Highlight Row 7<br/>password (4880)
+        Burp->>Attacker: Highlight Row 7 password
     end
     
-    Attacker->>DVWA: Manual login with<br/>admin:password
-    DVWA-->>Attacker: Authenticated!
+    Attacker->>DVWA: Manual login admin password
+    DVWA-->>Attacker: Authenticated
 ```
 
 ---

@@ -125,17 +125,17 @@ sequenceDiagram
     participant DVWA as DVWA Application
     participant DB as MySQL Database
     
-    Attacker->>DVWA: Step 1: id=1'<br/>Syntax Error
-    DVWA-->>Attacker: MySQL Error<br/>Injection Confirmed
+    Attacker->>DVWA: Step 1 id=1'
+    DVWA-->>Attacker: MySQL Error Injection Confirmed
     
-    Attacker->>DVWA: Step 2: id=1' OR '1'='1<br/>Boolean Bypass
-    DVWA->>DB: SELECT * FROM users<br/>WHERE id='1' OR '1'='1'
+    Attacker->>DVWA: Step 2 OR 1=1 Boolean Bypass
+    DVWA->>DB: "SELECT FROM users WHERE id=1 OR 1=1"
     DB-->>DVWA: All 5 Records
     DVWA-->>Attacker: Complete User List
     
-    Attacker->>DVWA: Step 3: UNION SELECT<br/>user,password FROM users--
+    Attacker->>DVWA: Step 3 UNION SELECT users
     DVWA->>DB: UNION Query Execution
-    DB-->>DVWA: Username + MD5 Hashes
+    DB-->>DVWA: Username and MD5 Hashes
     DVWA-->>Attacker: Credential Harvest
 ```
 

@@ -121,18 +121,18 @@ sequenceDiagram
     participant Shell as Web Shell
     participant Server as Web Server
     
-    Attacker->>DVWA: Upload shell.php<br/>No validation
-    DVWA-->>Attacker: Upload success!<br/>../../hackable/uploads/shell.php
+    Attacker->>DVWA: Upload shell.php no validation
+    DVWA-->>Attacker: Upload success uploads/shell.php
     
-    Attacker->>Shell: GET /shell.php?cmd=whoami
-    Shell->>Server: system("whoami")
+    Attacker->>Shell: "GET shell.php?cmd=whoami"
+    Shell->>Server: "system(whoami)"
     Server-->>Shell: www-data
     Shell-->>Attacker: www-data
     
-    Attacker->>Shell: GET /shell.php?cmd=id
-    Shell->>Server: system("id")
-    Server-->>Shell: uid=33www-datagid=33www-data
-    Shell-->>Attacker: uid=33www-datagid=33www-data
+    Attacker->>Shell: "GET shell.php?cmd=id"
+    Shell->>Server: "system(id)"
+    Server-->>Shell: uid=33www-data gid=33www-data
+    Shell-->>Attacker: uid=33www-data gid=33www-data
 ```
 
 ---
