@@ -129,7 +129,7 @@ sequenceDiagram
     DVWA-->>Attacker: MySQL Error Injection Confirmed
     
     Attacker->>DVWA: Step 2 OR 1=1 Boolean Bypass
-    DVWA->>DB: "SELECT FROM users WHERE id=1 OR 1=1"
+    DVWA->>DB: SELECT FROM users WHERE id=1 OR 1=1
     DB-->>DVWA: All 5 Records
     DVWA-->>Attacker: Complete User List
     

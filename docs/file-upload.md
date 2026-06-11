@@ -124,13 +124,13 @@ sequenceDiagram
     Attacker->>DVWA: Upload shell.php no validation
     DVWA-->>Attacker: Upload success uploads/shell.php
     
-    Attacker->>Shell: "GET shell.php?cmd=whoami"
-    Shell->>Server: "system(whoami)"
+    Attacker->>Shell: GET shell.php with cmd whoami
+    Shell->>Server: system whoami
     Server-->>Shell: www-data
     Shell-->>Attacker: www-data
     
-    Attacker->>Shell: "GET shell.php?cmd=id"
-    Shell->>Server: "system(id)"
+    Attacker->>Shell: GET shell.php with cmd id
+    Shell->>Server: system id
     Server-->>Shell: uid=33www-data gid=33www-data
     Shell-->>Attacker: uid=33www-data gid=33www-data
 ```

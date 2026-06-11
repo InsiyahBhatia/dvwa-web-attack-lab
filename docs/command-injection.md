@@ -120,18 +120,18 @@ sequenceDiagram
     participant Shell as OS Shell
     participant Kali as Attacker Listener
 
-    Attacker->>DVWA: Input 127.0.0.1; whoami
-    DVWA->>Shell: "shell_exec(ping -c 4 127.0.0.1; whoami)"
+    Attacker->>DVWA: Input 127.0.0.1 semicolon whoami
+    DVWA->>Shell: Pass to shell_exec
     Shell-->>DVWA: www-data
-    DVWA-->>Attacker: Ping + www-data
+    DVWA-->>Attacker: Ping output plus www-data
 
-    Attacker->>DVWA: Input 127.0.0.1; id
-    DVWA->>Shell: "shell_exec(ping -c 4 127.0.0.1; id)"
-    Shell-->>DVWA: uid=33www-data gid=33www-data
-    DVWA-->>Attacker: Ping + uid/gid
+    Attacker->>DVWA: Input 127.0.0.1 semicolon id
+    DVWA->>Shell: Pass to shell_exec
+    Shell-->>DVWA: uid and gid
+    DVWA-->>Attacker: Ping output plus uid and gid
 
-    Attacker->>DVWA: Input 127.0.0.1; reverse shell
-    DVWA->>Shell: "shell_exec(ping ... ; reverse shell)"
+    Attacker->>DVWA: Input 127.0.0.1 semicolon reverse shell
+    DVWA->>Shell: Pass to shell_exec
     Shell->>Kali: TCP connection on port 4444
     Kali-->>Shell: Interactive bash shell
     Kali->>Attacker: Root shell access

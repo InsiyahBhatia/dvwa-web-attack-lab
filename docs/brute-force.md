@@ -150,10 +150,10 @@ sequenceDiagram
     participant DVWA as DVWA Login
     
     loop Sniper Attack 12 requests
-        Burp->>DVWA: "GET brute password attempt"
+        Burp->>DVWA: GET brute password attempt
         DVWA-->>Burp: 200 OK Length 4836
         
-        Burp->>DVWA: "GET brute password=password"
+        Burp->>DVWA: GET brute password password
         DVWA-->>Burp: 200 OK Length 4880
         note over DVWA,Burp: Anomaly detected!
         

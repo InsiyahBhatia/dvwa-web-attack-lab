@@ -114,10 +114,10 @@ sequenceDiagram
     participant Kali as Attacker Listener
 
     Attacker->>Victim: Victim clicks crafted URL
-    Victim->>DVWA: "GET xss_r with script payload"
+    Victim->>DVWA: GET xss_r with script payload
     DVWA-->>Victim: Response with unsanitised input
     Victim->>Victim: Script executes cookie redirect
-    Victim->>Kali: "HTTP GET with PHPSESSID cookie"
+    Victim->>Kali: HTTP GET with PHPSESSID cookie
     Kali-->>Victim: 200 OK empty
     Kali->>Attacker: Session cookie captured
 ```
