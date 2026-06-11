@@ -1,0 +1,65 @@
+title: SQL Injection Attempt in Web Parameters
+id: a1b2c3d4-e5f6-7890-abcd-ef1234567890
+status: experimental
+description: >
+  Detects common SQL injection patterns in HTTP GET/POST parameters.
+  Covers error-based, UNION-based, and boolean-based blind injection attempts
+  as demonstrated in the DVWA web application pentest lab.
+author: Web Application Pentest Lab
+date: 2026/06/11
+references:
+  - https://owasp.org/www-community/attacks/SQL_Injection
+  - https://attack.mitre.org/techniques/T1190/
+
+logsource:
+  category: webserver
+
+detection:
+  selection_union:
+    request|contains:
+      - 'UNION SELECT'
+      - 'union select'
+      - 'Union Select'
+
+  selection_boolean:
+    request|contains:
+      - "' OR '"
+      - "' OR '1'='1"
+      - "1=1--"
+      - "' --"
+      - "';--"
+
+  selection_enumeration:
+    request|contains:
+      - 'information_schema'
+      - 'table_name'
+      - 'column_name'
+      - 'load_file'
+      - 'INTO OUTFILE'
+
+  selection_error:
+    request|contains:
+      - "1'"
+      - "1%27"
+
+  condition: selection_union or selection_boolean or selection_enumeration
+
+falsepositives:
+  - Legitimate database query debugging tools
+  - Security scanning tools (Nikto, SQLMap) in authorised pen tests
+
+level: high
+
+tags:
+  - attack.initial_access
+  - attack.t1190
+  - attack.credential_access
+  - attack.t1552
+
+fields:
+  - src_ip
+  - http_method
+  - url
+  - user_agent
+  - response_code
+  - response_size

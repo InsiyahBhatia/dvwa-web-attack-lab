@@ -1,0 +1,121 @@
+title: PHP Web Shell Upload Detected
+id: b2c3d4e5-f6a7-8901-bcde-f12345678901
+status: experimental
+description: >
+  Detects upload of PHP web shells to web-accessible directories.
+  Triggered by POST requests to upload endpoints with PHP file extensions,
+  followed by suspicious GET requests to those same files with command parameters.
+  Demonstrated via DVWA File Upload vulnerability (T1505.003).
+author: Web Application Pentest Lab
+date: 2026/06/11
+references:
+  - https://attack.mitre.org/techniques/T1505/003/
+  - https://owasp.org/www-community/vulnerabilities/Unrestricted_File_Upload
+
+logsource:
+  category: webserver
+
+detection:
+  # Stage 1 — Detect PHP file being uploaded
+  upload_attempt:
+    http_method: POST
+    uri|contains:
+      - 'upload'
+      - 'file'
+    request|contains:
+      - '.php'
+      - '.phtml'
+      - '.php5'
+      - '.phar'
+      - '.shtml'
+
+  # Stage 2 — Detect shell execution via GET parameter
+  shell_execution:
+    http_method: GET
+    uri|contains:
+      - '/uploads/'
+      - '/hackable/'
+    request|contains:
+      - 'cmd='
+      - 'exec='
+      - 'command='
+      - 'shell='
+      - 'run='
+      - 'c='
+
+  # Stage 3 — Detect dangerous commands in parameters
+  dangerous_commands:
+    request|contains:
+      - 'whoami'
+      - 'cat /etc'
+      - '/etc/passwd'
+      - 'id;'
+      - 'uname'
+      - '/bin/bash'
+      - 'nc -'
+
+  condition: upload_attempt or shell_execution or dangerous_commands
+
+falsepositives:
+  - Authorised file upload functionality for images/documents (review context)
+  - Legitimate admin tools that accept cmd parameters
+
+level: critical
+
+tags:
+  - attack.persistence
+  - attack.t1505.003
+  - attack.execution
+  - attack.t1059.004
+
+fields:
+  - src_ip
+  - http_method
+  - uri
+  - filename
+  - user_agent
+  - response_code
+
+---
+title: Suspicious Process Spawned by Web Server
+id: c3d4e5f6-a7b8-9012-cdef-123456789012
+status: experimental
+description: >
+  Detects shell processes or network tools spawned as children of the web server
+  process (apache2, nginx, php-fpm), which may indicate web shell execution or
+  command injection exploitation.
+author: Web Application Pentest Lab
+date: 2026/06/11
+
+logsource:
+  category: process_creation
+  product: linux
+
+detection:
+  web_server_parent:
+    ParentImage|contains:
+      - 'apache2'
+      - 'nginx'
+      - 'php-fpm'
+      - 'php'
+      - 'httpd'
+
+  suspicious_child:
+    Image|contains:
+      - '/bin/bash'
+      - '/bin/sh'
+      - '/usr/bin/nc'
+      - '/usr/bin/ncat'
+      - '/usr/bin/python'
+      - '/usr/bin/perl'
+      - '/usr/bin/curl'
+      - '/usr/bin/wget'
+
+  condition: web_server_parent and suspicious_child
+
+level: critical
+
+tags:
+  - attack.execution
+  - attack.t1059.004
+  - attack.t1505.003
